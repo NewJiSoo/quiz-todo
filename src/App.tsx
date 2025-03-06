@@ -6,6 +6,7 @@ import Quiz from "./pages/Quiz";
 import QuizList from "./pages/QuizList";
 import Notfound from "./pages/Notfound";
 import { css } from "@emotion/react";
+import Login from "./pages/Login";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
 
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/quiz/:id" element={<Quiz />} />
         <Route path="/quiz-list" element={<QuizList />} />
         <Route path="*" element={<Notfound />} />

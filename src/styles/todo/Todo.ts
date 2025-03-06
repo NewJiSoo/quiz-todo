@@ -9,6 +9,12 @@ export const TodoListWrapper = styled.div`
   border-radius: 12px;
 `;
 
+export const TodoHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
 export const TodoTitle = styled.header`
   display: flex;
   align-items: center;
@@ -16,16 +22,33 @@ export const TodoTitle = styled.header`
   font-weight: 600;
 `;
 
+export const AddTodo = styled.div`
+  width: 24px;
+  height: 24px;
+  color: #475569;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  &:hover {
+    width: 24px;
+    height: 24px;
+    background-color: #f6f6f7;
+    border-radius: 4px;
+  }
+`;
+
 export const TodoListContainer = styled.ul`
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  padding: 0;
 `;
 
 export const TodoContainer = styled.li`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding-bottom: 12px;
 `;
 
 export const CheckboxWrapper = styled.label`
@@ -39,8 +62,8 @@ export const HiddenCheckbox = styled.input`
 `;
 
 export const CustomCheckbox = styled.div`
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
   border: 2px solid #e2e8f0;
   border-radius: 8px;
   margin-right: 10px;
@@ -76,5 +99,22 @@ export const CheckboxLabel = styled.span`
   ${HiddenCheckbox}:checked + ${CustomCheckbox} + & {
     color: #94a3b8;
     text-decoration: line-through;
+  }
+`;
+
+export const EditTodo = styled.div`
+  width: 24px;
+  height: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: ${({ bgColor }: { bgColor?: string }) =>
+    bgColor || "#f8fafc"};
+  border-radius: 100%;
+  color: ${({ color }) => color || "#64748b"};
+  cursor: pointer;
+  opacity: 0;
+  ${TodoContainer}:hover & {
+    opacity: 1;
   }
 `;
