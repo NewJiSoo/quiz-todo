@@ -7,11 +7,14 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "generate-types": "npx supabase gen types typescript --project-id fvkscyyonttjhatagruw --schema public > types_db.ts"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
+    "@hello-pangea/dnd": "^18.0.1",
+    "@supabase/supabase-js": "^2.49.1",
     "@swc/plugin-emotion": "^9.0.0",
     "dayjs": "^1.11.13",
     "lucide-react": "^0.477.0",
