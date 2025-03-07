@@ -1,14 +1,15 @@
 import { css } from "@emotion/react";
 import {
-  LogoutButton,
   ProfileCard,
   ProfileIcon,
   ProfileWrapper,
 } from "../../styles/common/Sidebar";
 import { EllipsisVertical } from "lucide-react";
+import Logout from "../auth/Logout";
+import { useAuthStore } from "../../store/useAuthStore";
 
 function Profile() {
-  const userEmail = "email.com";
+  const userEmail = useAuthStore((state) => state.userEmail);
 
   return (
     <ProfileWrapper>
@@ -34,17 +35,15 @@ function Profile() {
         <span
           css={css`
             font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 200px;
           `}
         >
           {userEmail}
         </span>
-        <LogoutButton
-          css={css`
-            cursor: pointer;
-          `}
-        >
-          로그아웃
-        </LogoutButton>
+        <Logout />
       </ProfileCard>
     </ProfileWrapper>
   );

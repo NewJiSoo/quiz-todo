@@ -1,43 +1,16 @@
-import { useState } from "react";
-import { supabase } from "../util/supabase";
+import { signInWithGoogle } from "../api/auth/auth";
 
 function Login() {
-  const [user, setUser] = useState<any>(null);
-
   const handleLogin = async () => {
-    const { data, error } = await supabase.auth.signInWithOAuth({
-      provider: "google",
-      options: {
-        queryParams: {
-          access_type: "offline",
-          prompt: "consent",
-        },
-      },
-    });
+    const { error } = await signInWithGoogle();
     if (error) {
-      alert(error.message);
-    } else {
-      setUser(data);
+      alert(`로그인 실패: ${error.message}`);
     }
-  };
-
-  const handleLogout = async () => {
-    await supabase.auth.signOut();
-    setUser(null);
   };
 
   return (
     <div>
-      {user ? (
-        <div>
-          <h3>Welcome, {user.email}</h3>
-          <button onClick={handleLogout}>Log Out</button>
-        </div>
-      ) : (
-        <div>
-          <button onClick={handleLogin}>Log in with Google</button>
-        </div>
-      )}
+      <button onClick={handleLogin}>구글 로그인</button>
     </div>
   );
 }
