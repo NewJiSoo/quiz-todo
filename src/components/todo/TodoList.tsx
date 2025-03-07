@@ -10,13 +10,27 @@ import HeaderIcon from "../home/HeaderIcon";
 import TodoItem from "./TodoItem";
 import { useEffect, useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "@hello-pangea/dnd";
-import { supabase } from "../../util/supabase";
-import { Database } from "../../../types_db";
+import TodoInput from "./TodoInput";
+import { useTodoStore } from "../../store/useTodoStore";
+import { type TODO } from "../../@types/todo";
+import getTodoList from "../../api/todo/getTodo";
+import { useAuthStore } from "../../store/useAuthStore";
 
 function TodoList() {
-  const [todos, setTodos] = useState<
-    Database["public"]["Tables"]["todo"]["Row"][]
-  >([]);
+  const [todos, setTodos] = useState<TODO[]>([]);
+  const userId = useAuthStore((state) => state.userId);
+  const createTodo = useTodoStore((state) => state.createTodo);
+  const setCreateTodo = useTodoStore((state) => state.setCreateTodo);
+
+  const onClickAddContent = () => {
+    setCreateTodo(true);
+  };
+
+  const handleNewTodo = (newTodo: TODO) => {
+    console.log(newTodo);
+    setTodos((prev) => [newTodo, ...prev]);
+  };
+
   const handleDragEnd = (result: any) => {
     if (!result.destination) return;
 
@@ -28,12 +42,13 @@ function TodoList() {
   };
 
   const fetchTodos = async () => {
-    const { data, error } = await supabase.from("todo").select("*");
+    const { data, error } = await getTodoList(userId);
     if (error) {
-      alert(error.message);
-      return;
+      console.log(error);
     }
-    setTodos(data);
+    if (data) {
+      setTodos(data);
+    }
   };
 
   useEffect(() => {
@@ -48,7 +63,7 @@ function TodoList() {
             <HeaderIcon icon={<SquareCheck />} backgroundColor="#34D399" />
             오늘 할 일
           </TodoTitle>
-          <AddTodo>
+          <AddTodo onClick={onClickAddContent}>
             <Plus width={20} />
           </AddTodo>
         </TodoHeader>
@@ -59,10 +74,12 @@ function TodoList() {
               ref={provided.innerRef}
               {...provided.droppableProps}
             >
+              {createTodo && <TodoInput onCreateTodo={handleNewTodo} />}
+
               {todos.map((todo, index) => (
                 <Draggable
-                  key={todo.id}
-                  draggableId={todo.id.toString()}
+                  key={String(todo.id)}
+                  draggableId={String(todo.id)}
                   index={index}
                 >
                   {(provided) => (
