@@ -14,21 +14,18 @@ export type Database = {
           content: string
           created_at: string
           id: number
-          order_index: number
           todo_list_id: number
         }
         Insert: {
           content: string
           created_at?: string
           id?: number
-          order_index: number
           todo_list_id: number
         }
         Update: {
           content?: string
           created_at?: string
           id?: number
-          order_index?: number
           todo_list_id?: number
         }
         Relationships: [
@@ -86,32 +83,6 @@ export type Database = {
           id?: number
           user_id?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "todo_lists_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      users: {
-        Row: {
-          created_at: string
-          id: string
-          user_email: number
-        }
-        Insert: {
-          created_at?: string
-          id?: string
-          user_email: number
-        }
-        Update: {
-          created_at?: string
-          id?: string
-          user_email?: number
-        }
         Relationships: []
       }
     }
@@ -119,7 +90,67 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      create_todo: {
+        Args: {
+          p_user_id: string
+          p_content: string
+        }
+        Returns: {
+          todo_id: number
+          content: string
+          created_at: string
+          todo_list_id: number
+        }[]
+      }
+      delete_todo: {
+        Args: {
+          todo_id: number
+          todo_list_id: number
+        }
+        Returns: undefined
+      }
+      edit_todo: {
+        Args: {
+          todo_id: number
+          todo_list_id: number
+          new_content: string
+        }
+        Returns: undefined
+      }
+      get_todo: {
+        Args: {
+          user_id: string
+        }
+        Returns: {
+          id: number
+          content: string
+          created_at: string
+          todo_list_id: number
+        }[]
+      }
+      update_todo_order:
+        | {
+            Args: {
+              todo_list_id: number
+              new_content: string[]
+            }
+            Returns: undefined
+          }
+        | {
+            Args: {
+              todo_list_id: number
+              new_order: number[]
+            }
+            Returns: undefined
+          }
+        | {
+            Args: {
+              todo_list_id: number
+              new_order: number[]
+              new_content: string[]
+            }
+            Returns: undefined
+          }
     }
     Enums: {
       [_ in never]: never
